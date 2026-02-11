@@ -535,20 +535,6 @@ canvas#scratchCanvas {
   opacity: 0.4;
 }
 
-.love-message-sub {
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.25);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.8s var(--transition-smooth) 0.6s;
-}
-
-.love-message.visible ~ .love-message-sub {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .love-message-hint {
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.2);
@@ -1062,7 +1048,6 @@ canvas#scratchCanvas {
   <div class="love-message" id="loveMessage">
     <div class="love-message-text">Jeg er glad i deg 💗</div>
   </div>
-  <div class="love-message-sub" id="loveSub">for alltid og evig</div>
   <div class="love-message-hint" id="loveHint">trykk for å fortsette</div>
 </div>
 
@@ -1356,10 +1341,11 @@ function initScratchCard() {
     document.getElementById('scratchBar').style.width = pct + '%';
     if (pct > 55 && !hasRevealed) {
       hasRevealed = true;
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = 'rgba(0,0,0,1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      setTimeout(() => showScreen('screen3', startLoveMessage), 700);
+      // Animate bar to 100% and fade canvas out smoothly
+      document.getElementById('scratchBar').style.width = '100%';
+      canvas.style.transition = 'opacity 0.8s ease';
+      canvas.style.opacity = '0';
+      setTimeout(() => showScreen('screen3', startLoveMessage), 1000);
     }
   }
 
