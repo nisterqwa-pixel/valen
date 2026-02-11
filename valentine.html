@@ -1255,7 +1255,7 @@ function updateProgressDots(screenNum) {
    ============================================ */
 let isTransitioning = false;
 
-function showScreen(screenId) {
+function showScreen(screenId, onComplete) {
   if (isTransitioning) return;
   isTransitioning = true;
 
@@ -1272,11 +1272,13 @@ function showScreen(screenId) {
       next.classList.add('active');
       updateProgressDots(num);
       isTransitioning = false;
+      if (onComplete) onComplete();
     }, 450);
   } else {
     next.classList.add('active');
     updateProgressDots(num);
     isTransitioning = false;
+    if (onComplete) onComplete();
   }
 }
 
@@ -1288,7 +1290,7 @@ document.getElementById('envelopeScene').addEventListener('click', () => {
   if (envelope.classList.contains('open')) return;
   envelope.classList.add('open');
   for (let i = 0; i < 6; i++) setTimeout(() => spawnShootingStar(), i * 100);
-  setTimeout(() => { showScreen('screen2'); initScratchCard(); }, 1000);
+  setTimeout(() => showScreen('screen2', initScratchCard), 1000);
 });
 
 /* ============================================
@@ -1357,7 +1359,7 @@ function initScratchCard() {
       ctx.globalCompositeOperation = 'destination-out';
       ctx.fillStyle = 'rgba(0,0,0,1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      setTimeout(() => { showScreen('screen3'); startLoveMessage(); }, 700);
+      setTimeout(() => showScreen('screen3', startLoveMessage), 700);
     }
   }
 
@@ -1404,7 +1406,7 @@ function startLoveMessage() {
       e.stopPropagation();
       document.getElementById('loveHint').style.display = 'none';
       screen.removeEventListener('click', advance);
-      setTimeout(() => { showScreen('screen4'); startTypewriter(); }, 400);
+      setTimeout(() => showScreen('screen4', startTypewriter), 400);
     }
     screen.addEventListener('click', advance);
   }
